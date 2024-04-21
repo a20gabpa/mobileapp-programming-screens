@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, OtherActivity.class);
+                // Send data to intent
+                intent.putExtra("number", 18321982);
                 startActivity(intent);
             }
         });
