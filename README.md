@@ -1,42 +1,120 @@
-
 # Rapport
+Det första steget var, likt tidigare, att skapa en fork av projektet på LenaSYS Github. Först ut var att lägga till en ny aktivitet. Jag valde att namnge den _OtherActivity_. Utöver att skapa själva klassen, lades några rader kod till i den tomma klassen samt en mindre uppdatering till _AndroidManifest.xml_.
 
-**Skriv din rapport här!**
-
-_Du kan ta bort all text som finns sedan tidigare_.
-
-## Följande grundsyn gäller dugga-svar:
-
-- Ett kortfattat svar är att föredra. Svar som är längre än en sida text (skärmdumpar och programkod exkluderat) är onödigt långt.
-- Svaret skall ha minst en snutt programkod.
-- Svaret skall inkludera en kort övergripande förklarande text som redogör för vad respektive snutt programkod gör eller som svarar på annan teorifråga.
-- Svaret skall ha minst en skärmdump. Skärmdumpar skall illustrera exekvering av relevant programkod. Eventuell text i skärmdumpar måste vara läsbar.
-- I de fall detta efterfrågas, dela upp delar av ditt svar i för- och nackdelar. Dina för- respektive nackdelar skall vara i form av punktlistor med kortare stycken (3-4 meningar).
-
-Programkod ska se ut som exemplet nedan. Koden måste vara korrekt indenterad då den blir lättare att läsa vilket gör det lättare att hitta syntaktiska fel.
-
+**OtherActivity.java**
 ```
-function errorCallback(error) {
-    switch(error.code) {
-        case error.PERMISSION_DENIED:
-            // Geolocation API stöds inte, gör något
-            break;
-        case error.POSITION_UNAVAILABLE:
-            // Misslyckat positionsanrop, gör något
-            break;
-        case error.UNKNOWN_ERROR:
-            // Okänt fel, gör något
-            break;
+package com.example.screens;
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class OtherActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
     }
 }
 ```
 
-Bilder läggs i samma mapp som markdown-filen.
+**AndroidManifest.xml**
 
-![](android.png)
+```
+...
+<activity android:name=".OtherActivity" />
+...
+```
 
-Läs gärna:
+Nästa steg var att lägga till en klickbar knapp i första aktiviten för att starta den nya aktiviteten samt skapa en ny vy som ska visas. En knapp lades till med texten "Click me!"
 
-- Boulos, M.N.K., Warren, J., Gong, J. & Yue, P. (2010) Web GIS in practice VIII: HTML5 and the canvas element for interactive online mapping. International journal of health geographics 9, 14. Shin, Y. &
-- Wunsche, B.C. (2013) A smartphone-based golf simulation exercise game for supporting arthritis patients. 2013 28th International Conference of Image and Vision Computing New Zealand (IVCNZ), IEEE, pp. 459–464.
-- Wohlin, C., Runeson, P., Höst, M., Ohlsson, M.C., Regnell, B., Wesslén, A. (2012) Experimentation in Software Engineering, Berlin, Heidelberg: Springer Berlin Heidelberg.
+**activity_other.xml**
+```
+<Button
+        android:id="@+id/presser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="160dp"
+        android:layout_marginLeft="160dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginRight="160dp"
+        android:layout_marginBottom="287dp"
+        android:text="Click me!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+```
+
+Den nya vyn innehåller tre stycken _textView_'s som innehåller några slumpmässiga meddelanden (en av dessa kommer att läggas till och uppdateras senare).
+
+**activity_other.xml**
+```
+...
+<TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to the other activity!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="176dp"
+        android:layout_marginLeft="176dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="177dp"
+        android:layout_marginRight="177dp"
+        android:layout_marginBottom="237dp"
+        android:text="What's this, another activity?"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+...
+```
+För att knappen ska fungera lades en _OnClickListener_ till knappen för att den ska kunna reagera på användarens inmatning. I denna _OnClickListener_ implenterades även funktionalitet för att starta nästa aktivitet.
+**MainActivity.java**
+```
+    // Try to find button by ID
+    Button btn = findViewById(R.id.presser);
+    // Create a on-click listener
+    btn.setOnClickListener(new View.OnClickListener() {
+        // Implement functionality for clicking on btn
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(MainActivity.this, OtherActivity.class);
+            startActivity(intent);
+        }
+    });
+```
+
+Sista steget är att skicka med information till den andra aktiviteten med hjälp av _intents_, _bundles_ och _extras_. Information skickades från _MainActivty.java_ till _OtherActivity.java_. Den följande koden lades till i **MainActivity.java** för att skicka vidare datan.
+```
+    // Send data to intent
+    intent.putExtra("number", 18321982);
+```
+och följande i **OtherActivity.java** för att ta emot och extrahera datan. Utöver att hämta ut informationen uppdaterades en tredje _textView_ med ID:et "numberText" för att visa att informationen har hämtats från _intent_
+```
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            int number = extras.getInt("number");
+
+            // Use the number to update the text element
+            TextView myNumberText = findViewById(R.id.numberText);
+            myNumberText.setText("Number carried from intent " + number);
+        }
+```
+
+Skärmklipp på skärmen för _MainActivity_
+![Screenshot_20240421_224548](https://github.com/a20gabpa/mobileapp-programming-screens/assets/102604680/8047937b-7429-4234-82e2-38e640fd298a)
+Skärklipp på skärmen för _OtherActivity_
+![Screenshot_20240421_224559](https://github.com/a20gabpa/mobileapp-programming-screens/assets/102604680/1ecd096f-959e-4298-97d1-809abe7c74ee)
+
+
