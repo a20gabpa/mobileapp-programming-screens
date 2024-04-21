@@ -28,7 +28,7 @@ public class OtherActivity extends AppCompatActivity {
 
 Nästa steg var att lägga till en klickbar knapp i första aktiviten för att starta den nya aktiviteten samt skapa en ny vy som ska visas. En knapp lades till med texten "Click me!"
 
-**activity_other.xml**
+**activity_main.xml**
 ```
 <Button
         android:id="@+id/presser"
@@ -110,6 +110,26 @@ och följande i **OtherActivity.java** för att ta emot och extrahera datan. Ut�
             TextView myNumberText = findViewById(R.id.numberText);
             myNumberText.setText("Number carried from intent " + number);
         }
+```
+
+Den tredje _textView_ lades även till för att sedan användas för att visa den hämtade datan.
+**activity_other.xml**
+```
+    <TextView
+        android:id="@+id/numberText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="170dp"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="97dp"
+        android:layout_marginEnd="170dp"
+        android:layout_marginRight="170dp"
+        android:layout_marginBottom="121dp"
+        android:text="XX Number"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 ```
 
 Skärmklipp på skärmen för _MainActivity_
